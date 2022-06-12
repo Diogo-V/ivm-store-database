@@ -1,19 +1,3 @@
-DROP TABLE IF EXISTS categoria cascade;
-DROP TABLE IF EXISTS categoria_simples cascade;
-DROP TABLE IF EXISTS super_categoria cascade;
-DROP TABLE IF EXISTS tem_outra cascade;
-DROP TABLE IF EXISTS tem_categoria cascade;
-DROP TABLE IF EXISTS produto cascade;
-DROP TABLE IF EXISTS ivm cascade;
-DROP TABLE IF EXISTS ponto_de_retalho cascade;
-DROP TABLE IF EXISTS instalada_em cascade;
-DROP TABLE IF EXISTS prateleira cascade;
-DROP TABLE IF EXISTS planograma cascade;
-DROP TABLE IF EXISTS retalhista cascade;
-DROP TABLE IF EXISTS responsavel_por cascade;
-DROP TABLE IF EXISTS evento_reposicao cascade;
-
-
 CREATE TABLE categoria (
     nome VARCHAR(80) NOT NULL UNIQUE,
     CONSTRAINT pk_categoria PRIMARY KEY (nome)
