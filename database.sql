@@ -50,7 +50,7 @@ CREATE TABLE ivm (
 
 CREATE TABLE ponto_de_retalho (
     nome VARCHAR(80) NOT NULL UNIQUE,
-    distrio VARCHAR(80) NOT NULL,
+    distrito VARCHAR(80) NOT NULL,
     concelho VARCHAR(80) NOT NULL,
     CONSTRAINT pk_ponto_de_retalho PRIMARY KEY (nome)
 );
@@ -187,19 +187,19 @@ $$ LANGUAGE plpgsql;
 --------------------------------------- Triggers ----------------
 
 
-CREATE TRIGGER chk_super_categoria
+CREATE OR REPLACE TRIGGER chk_super_categoria
 BEFORE Update OR INSERT On tem_outra
 FOR EACH ROW EXECUTE PROCEDURE chk_super_categoria_proc();
 
-CREATE TRIGGER chk_unidades_evento_de_reposicao
+CREATE OR REPLACE TRIGGER chk_unidades_evento_de_reposicao
 BEFORE Update OR INSERT On tem_outra
 FOR EACH ROW EXECUTE PROCEDURE chk_unidades_evento_de_reposicao_proc();
 
-CREATE TRIGGER chk_reposicao_produto_maquina_planograma
+CREATE OR REPLACE TRIGGER chk_reposicao_produto_maquina_planograma
 BEFORE Update OR INSERT On planograma
 FOR EACH ROW EXECUTE PROCEDURE chk_reposicao_produto_maquina_proc();
 
-CREATE TRIGGER chk_reposicao_produto_maquina_evento_reposicao
+CREATE OR REPLACE TRIGGER chk_reposicao_produto_maquina_evento_reposicao
 BEFORE Update OR INSERT On evento_reposicao
 FOR EACH ROW EXECUTE PROCEDURE chk_reposicao_produto_maquina_proc();
 
@@ -219,15 +219,25 @@ select nome from evento_reposicao natural join retalhista group by tin,nome havi
 select nome from retalhista as R where not exists (
     select nome from categoria_simples
     Except
-    select nome from (categoria_simples join responsavel_por on categoria_simples.nome=responsavel) as X where
+    select nome from (categoria_simples join responsavel_por on categoria_simples.nome=responsavel_por.nome_cat) as X where
     X.tin = R.tin
 );
 
 -- 3)
 
-select ean from products as P where not exists(
-    select ean from evento_reposiscao where P.ean = evento_reposicao.ean
+select ean from produto as P where not exists(
+    select ean from evento_reposicao where P.ean = evento_reposicao.ean
 );
 
 -- 4)
 select ean from evento_reposicao group by ean having count(*)=1;
+
+
+
+------------------------------------- View ------------------------------------
+
+CREATE VIEW Vendas(ean, cat, ano, trimestre, dia_mes, dia_semana, distrito, concelho, unidades)
+AS
+SELECT ean,cat,EXTRACT(QUARTER FROM instante) as trimestre,EXTRACT(YEAR FROM instante) as ano,EXTRACT(DAY FROM instante) as dia_mes,
+EXTRACT(DOW FROM instante) as dia_semana,distrito,concelho,unidades from produto natural join evento_reposicao as E
+natural join instalada_em as I inner join ponto_de_retalho as P on I.local=P.nome;
