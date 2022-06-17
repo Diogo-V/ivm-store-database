@@ -35,8 +35,8 @@ CREATE TABLE produto (
 
 
 CREATE TABLE tem_categoria(
-    ean numeric(10,4)	not null UNIQUE,
-    nome VARCHAR(80) NOT NULL UNIQUE,
+    ean numeric(10,4) not null UNIQUE,
+    nome VARCHAR(80) NOT NULL,
     CONSTRAINT fk_tem_categoria_ean FOREIGN KEY(ean) REFERENCES produto(ean),
     CONSTRAINT fk_tem_categoria_nome FOREIGN KEY(nome) REFERENCES categoria(nome)
 );
@@ -64,16 +64,15 @@ CREATE TABLE instalada_em(
     CONSTRAINT fk_instalada_em_num_serie FOREIGN KEY(num_serie) REFERENCES ivm(num_serie),
     CONSTRAINT fk_instalada_em_fabricante FOREIGN KEY(fabricante) REFERENCES ivm(fabricante),
     CONSTRAINT fk_instalada_em_local FOREIGN KEY(local) REFERENCES ponto_de_retalho(nome)
-
 );
 
 CREATE TABLE prateleira (
-    nro numeric(16,4)not null UNIQUE,
-    num_serie numeric(16,0) NOT NULL UNIQUE,
-    fabricante VARCHAR(80) NOT NULL UNIQUE,
+    nro numeric(16,4) not null UNIQUE,
+    num_serie numeric(16,0) NOT NULL,
+    fabricante VARCHAR(80) NOT NULL,
     altura numeric(4, 1) not null,
     nome VARCHAR(80) NOT NULL,
-    CONSTRAINT pk_prateleira PRIMARY KEY (nro,num_serie,fabricante),
+    CONSTRAINT pk_prateleira PRIMARY KEY (nro, num_serie, fabricante),
     CONSTRAINT fk_prateleira_num_serie FOREIGN KEY(num_serie) REFERENCES ivm(num_serie),
     CONSTRAINT fk_prateleira_fabricante FOREIGN KEY(fabricante) REFERENCES ivm(fabricante),
     CONSTRAINT fk_prateleira_nome FOREIGN KEY(nome) REFERENCES categoria(nome)
@@ -93,14 +92,12 @@ CREATE TABLE planograma (
     CONSTRAINT fk_planograma_num_serie FOREIGN KEY(num_serie) REFERENCES prateleira(num_serie),
     CONSTRAINT fk_planograma_fabricante FOREIGN KEY(fabricante) REFERENCES prateleira(fabricante),
     CONSTRAINT fk_planograma_nro FOREIGN KEY(nro) REFERENCES prateleira(nro)
-
 );
 
 CREATE TABLE retalhista(
     tin numeric(16,0) NOT NULL UNIQUE,
     nome VARCHAR(80) NOT NULL UNIQUE,
     CONSTRAINT pk_retalhista PRIMARY KEY (tin)
-
 );
 
 CREATE TABLE responsavel_por(
@@ -113,7 +110,6 @@ CREATE TABLE responsavel_por(
     CONSTRAINT fk_responsvale_por_fabricante FOREIGN KEY(fabricante) REFERENCES ivm(fabricante),
     CONSTRAINT fk_responsvale_por_tin FOREIGN KEY(tin) REFERENCES retalhista(tin),
     CONSTRAINT fk_responsvale_por__nome_categoria FOREIGN KEY(nome_cat) REFERENCES categoria(nome)
-
 );
 
 
