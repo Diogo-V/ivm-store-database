@@ -1,7 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>
-        Ean never replaced :)
-    </h1>
+    <h2>
+        Resultados obtidos:
+    </h2>
+    <p>
+        {% for r in result %}
+            <li>
+                {{ r }}
+            </li>
+        {% endfor %}
+    </p>
 {% endblock %}

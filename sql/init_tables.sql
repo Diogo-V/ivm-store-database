@@ -68,8 +68,8 @@ CREATE TABLE instalada_em(
 
 CREATE TABLE prateleira (
     nro numeric(16,4) not null UNIQUE,
-    num_serie numeric(16,0) NOT NULL,
-    fabricante VARCHAR(80) NOT NULL,
+    num_serie numeric(16,0) NOT NULL UNIQUE,
+    fabricante VARCHAR(80) NOT NULL UNIQUE,
     altura numeric(4, 1) not null,
     nome VARCHAR(80) NOT NULL,
     CONSTRAINT pk_prateleira PRIMARY KEY (nro, num_serie, fabricante),
