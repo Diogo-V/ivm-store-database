@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <p>Formato das datas: DD/MM/YYYY</p>
     <form action="." method="POST"> {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="save">
