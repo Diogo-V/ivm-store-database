@@ -1,0 +1,23 @@
+-- 1)
+
+select nome from evento_reposicao natural join retalhista group by tin,nome having count(*) >= all (
+    select count(*) from evento_reposicao group by tin
+);
+
+-- 2)
+
+select nome from retalhista as R where not exists (
+    select nome from categoria_simples
+    Except
+    select nome from (categoria_simples join responsavel_por on categoria_simples.nome=responsavel_por.nome_cat) as X where
+    X.tin = R.tin
+);
+
+-- 3)
+
+select ean from produto as P where not exists(
+    select ean from evento_reposicao where P.ean = evento_reposicao.ean
+);
+
+-- 4)
+select ean from evento_reposicao group by ean having count(*)=1;
