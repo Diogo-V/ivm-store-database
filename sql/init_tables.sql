@@ -71,11 +71,12 @@ CREATE TABLE prateleira (
     nro numeric(16,4)not null UNIQUE,
     num_serie numeric(16,0) NOT NULL UNIQUE,
     fabricante VARCHAR(80) NOT NULL UNIQUE,
-    altura numeric(16,4) not null,
+    altura numeric(4, 1) not null,
     nome VARCHAR(80) NOT NULL,
     CONSTRAINT pk_prateleira PRIMARY KEY (nro,num_serie,fabricante),
     CONSTRAINT fk_prateleira_num_serie FOREIGN KEY(num_serie) REFERENCES ivm(num_serie),
-    CONSTRAINT fk_prateleira_fabricante FOREIGN KEY(fabricante) REFERENCES ivm(fabricante)
+    CONSTRAINT fk_prateleira_fabricante FOREIGN KEY(fabricante) REFERENCES ivm(fabricante),
+    CONSTRAINT fk_prateleira_nome FOREIGN KEY(nome) REFERENCES categoria(nome)
 );
 
 
