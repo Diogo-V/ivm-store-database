@@ -38,7 +38,7 @@ class Ivm(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['num_serie', 'fabricante'], name='unique_num_serie_fabricante_combination'
+                fields=['num_serie', 'fabricante'], name='Ivm_num_serie_fabricante_combination'
             )
         ]
 
@@ -57,7 +57,7 @@ class InstaladaEm(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['num_serie', 'fabricante'], name='unique_num_serie_fabricante_combination'
+                fields=['num_serie', 'fabricante'], name='InstaladaEm_num_serie_fabricante_combination'
             )
         ]
 
@@ -72,7 +72,7 @@ class Prateleira(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['nro', 'num_serie', 'fabricante'], name='unique_nro_num_serie_fabricante_combination'
+                fields=['nro', 'num_serie', 'fabricante'], name='Prateleira_nro_num_serie_fabricante_combination'
             )
         ]
 
@@ -86,7 +86,7 @@ class Planograma(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['ean', 'nro', 'num_serie', 'fabricante'], name='unique_ean_nro_num_serie_fabricante_combination'
+                fields=['ean', 'nro', 'num_serie', 'fabricante'], name='Planograma_ean_nro_num_serie_fabricante_combination'
             )
         ]
 
@@ -105,7 +105,7 @@ class ResponsavelPor(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['num_serie', 'fabricante'], name='unique_num_serie_fabricante_combination'
+                fields=['num_serie', 'fabricante'], name='ResponsavelPor_num_serie_fabricante_combination'
             )
         ]
 
@@ -114,7 +114,7 @@ class EventoReposicao(models.Model):
     ean = models.ForeignKey(Planograma, on_delete=models.DO_NOTHING, to_field=Planograma.ean)
     nro = models.ForeignKey(Planograma, on_delete=models.DO_NOTHING, to_field=Planograma.nro)
     num_serie = models.ForeignKey(Planograma, on_delete=models.DO_NOTHING, to_field=Planograma.num_serie)
-    fabricante = models.ForeignKey(Planograma, on_delete=models.DO_NOTHING, to_field=Planograma.fabricante)
+    fabricante = models.ForeignKey(Planograma, on_delete=models.DO_NOTHING, to_field=Planograma.fabricante, related_name='+')
     tin = models.ForeignKey(Retalhista, on_delete=models.DO_NOTHING, to_field=Retalhista.tin)
     unidades = models.IntegerField(max_length=16, null=False)
     instante = models.DateTimeField(null=False, unique=True)
