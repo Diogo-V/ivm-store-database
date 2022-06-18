@@ -5,4 +5,15 @@
         {{ form.as_p }}
         <input type="submit" value="save">
     </form>
+
+    <h2>
+        Resultados obtidos:
+    </h2>
+    <p>
+        {% for r in result %}
+            <li>
+                {{ r }}
+            </li>
+        {% endfor %}
+    </p>
 {% endblock %}

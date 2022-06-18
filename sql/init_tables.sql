@@ -26,7 +26,7 @@ CREATE TABLE tem_outra (
 
 
 CREATE TABLE produto (
-    ean numeric(10,4)	not null UNIQUE,
+    ean numeric(13, 0)	not null UNIQUE,
     cat VARCHAR(80) NOT NULL,
     descr VARCHAR(256) NOT NULL,
     CONSTRAINT pk_produto PRIMARY KEY (ean),
@@ -35,7 +35,7 @@ CREATE TABLE produto (
 
 
 CREATE TABLE tem_categoria(
-    ean numeric(10,4) not null UNIQUE,
+    ean numeric(13,0) not null UNIQUE,
     nome VARCHAR(80) NOT NULL,
     CONSTRAINT fk_tem_categoria_ean FOREIGN KEY(ean) REFERENCES produto(ean),
     CONSTRAINT fk_tem_categoria_nome FOREIGN KEY(nome) REFERENCES categoria(nome)
@@ -66,7 +66,7 @@ CREATE TABLE instalada_em(
 );
 
 CREATE TABLE prateleira (
-    nro numeric(16,4) not null UNIQUE,
+    nro numeric(16,0) not null UNIQUE,
     num_serie numeric(16,0) NOT NULL,
     fabricante VARCHAR(80) NOT NULL,
     altura numeric(4, 1) not null,
@@ -78,8 +78,8 @@ CREATE TABLE prateleira (
 
 
 CREATE TABLE planograma (
-    ean numeric(16,4) not null,
-    nro numeric(16,4) not null,
+    ean numeric(13,0) not null,
+    nro numeric(16,0) not null,
     num_serie numeric(16,0) NOT NULL,
     fabricante VARCHAR(80) NOT NULL,
     faces numeric (4,0) NOT NULL,
@@ -109,7 +109,7 @@ CREATE TABLE responsavel_por(
 
 
 CREATE TABLE evento_reposicao(
-    ean numeric(16,4) not null,
+    ean numeric(13,0) not null,
     nro numeric(16,4) not null,
     num_serie numeric(16,0) NOT NULL,
     fabricante VARCHAR(80) NOT NULL,
