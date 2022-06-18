@@ -16,15 +16,35 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+
+-- RI-2)
+
+
+CREATE OR REPLACE FUNCTION chk_categoria_simples_proc()
+RETURNS TRIGGER AS
+$$
+BEGIN
+
+    
+    IF EXISTS(SELECT nome from super_categoria WHERE nome LIKE NEW.nome) THEN
+        RAISE EXCEPTION 'Nome de categoria simples existe na super categoria';
+    END IF; 
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
 -- RI-4)
 
 CREATE OR REPLACE FUNCTION chk_unidades_evento_de_reposicao_proc()
 RETURNS TRIGGER AS
 $$
+
+declare total decimal (16,0);
 BEGIN
 
-    SELECT unidades from planograma WHERE ean = NEW.ean;
-    IF NEW.unidades > unidades THEN
+    SELECT unidades into total from planograma WHERE ean = NEW.ean;
+    IF NEW.unidades > total THEN
         RAISE EXCEPTION 'Numero de unidades do evento de reposicao excede as do planograma';
     END IF; 
 
@@ -49,6 +69,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 
+
 --------------------------------------- Triggers ----------------
 
 
@@ -57,13 +78,14 @@ BEFORE Update OR INSERT On tem_outra
 FOR EACH ROW EXECUTE PROCEDURE chk_super_categoria_proc();
 
 CREATE OR REPLACE TRIGGER chk_unidades_evento_de_reposicao
-BEFORE Update OR INSERT On tem_outra
+BEFORE Update OR INSERT On evento_reposicao
 FOR EACH ROW EXECUTE PROCEDURE chk_unidades_evento_de_reposicao_proc();
-
-CREATE OR REPLACE TRIGGER chk_reposicao_produto_maquina_planograma
-BEFORE Update OR INSERT On planograma
-FOR EACH ROW EXECUTE PROCEDURE chk_reposicao_produto_maquina_proc();
 
 CREATE OR REPLACE TRIGGER chk_reposicao_produto_maquina_evento_reposicao
 BEFORE Update OR INSERT On evento_reposicao
 FOR EACH ROW EXECUTE PROCEDURE chk_reposicao_produto_maquina_proc();
+
+
+CREATE OR REPLACE TRIGGER chk_categoria_simples
+BEFORE Update OR INSERT On categoria_simples
+FOR EACH ROW EXECUTE PROCEDURE chk_categoria_simples_proc();
