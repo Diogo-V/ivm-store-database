@@ -57,8 +57,8 @@ CREATE TABLE ponto_de_retalho (
 
 
 CREATE TABLE instalada_em(
-    num_serie numeric(16,0) NOT NULL UNIQUE,
-    fabricante VARCHAR(80) NOT NULL UNIQUE,
+    num_serie numeric(16,0) NOT NULL,
+    fabricante VARCHAR(80) NOT NULL,
     local VARCHAR(80) NOT NULL,
     CONSTRAINT pk_instalada_em PRIMARY KEY (num_serie, fabricante),
     CONSTRAINT fk_instalada_em_ivm FOREIGN KEY(num_serie, fabricante) REFERENCES ivm(num_serie, fabricante),
@@ -67,8 +67,8 @@ CREATE TABLE instalada_em(
 
 CREATE TABLE prateleira (
     nro numeric(16,4) not null UNIQUE,
-    num_serie numeric(16,0) NOT NULL UNIQUE,
-    fabricante VARCHAR(80) NOT NULL UNIQUE,
+    num_serie numeric(16,0) NOT NULL,
+    fabricante VARCHAR(80) NOT NULL,
     altura numeric(4, 1) not null,
     nome VARCHAR(80) NOT NULL,
     CONSTRAINT pk_prateleira PRIMARY KEY (nro, num_serie, fabricante),
@@ -78,10 +78,10 @@ CREATE TABLE prateleira (
 
 
 CREATE TABLE planograma (
-    ean numeric(16,4) not null UNIQUE,
-    nro numeric(16,4) not null UNIQUE,
-    num_serie numeric(16,0) NOT NULL UNIQUE,
-    fabricante VARCHAR(80) NOT NULL UNIQUE,
+    ean numeric(16,4) not null,
+    nro numeric(16,4) not null,
+    num_serie numeric(16,0) NOT NULL,
+    fabricante VARCHAR(80) NOT NULL,
     faces numeric (4,0) NOT NULL,
     unidades numeric (7,0) NOT NULL,
     loc VARCHAR(80) NOT NULL,
@@ -92,14 +92,14 @@ CREATE TABLE planograma (
 
 CREATE TABLE retalhista(
     tin numeric(16,0) NOT NULL UNIQUE,
-    nome VARCHAR(80) NOT NULL UNIQUE,
+    nome VARCHAR(80) NOT NULL,
     CONSTRAINT pk_retalhista PRIMARY KEY (tin)
 );
 
 CREATE TABLE responsavel_por(
     tin numeric(16,0) NOT NULL,
-    num_serie numeric(16,0) NOT NULL UNIQUE,
-    fabricante VARCHAR(80) NOT NULL UNIQUE,
+    num_serie numeric(16,0) NOT NULL,
+    fabricante VARCHAR(80) NOT NULL,
     nome_cat VARCHAR(80) NOT NULL,
     CONSTRAINT pk_responsavel_por PRIMARY KEY (num_serie, fabricante),
     CONSTRAINT fk_responsvale_por_ivm FOREIGN KEY(num_serie, fabricante) REFERENCES ivm(num_serie, fabricante),
@@ -109,10 +109,10 @@ CREATE TABLE responsavel_por(
 
 
 CREATE TABLE evento_reposicao(
-    ean numeric(16,4) not null UNIQUE,
-    nro numeric(16,4) not null UNIQUE,
-    num_serie numeric(16,0) NOT NULL UNIQUE,
-    fabricante VARCHAR(80) NOT NULL UNIQUE,
+    ean numeric(16,4) not null,
+    nro numeric(16,4) not null,
+    num_serie numeric(16,0) NOT NULL,
+    fabricante VARCHAR(80) NOT NULL,
     tin numeric(16,0) NOT NULL,
     unidades numeric(16,0)NOT NULL,
     instante TIMESTAMP  NOT NULL UNIQUE,
