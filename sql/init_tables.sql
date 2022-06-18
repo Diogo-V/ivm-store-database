@@ -45,7 +45,7 @@ CREATE TABLE tem_categoria(
 CREATE TABLE ivm (
     num_serie numeric(10,0) NOT NULL UNIQUE,
     fabricante VARCHAR(80) NOT NULL UNIQUE,
-    CONSTRAINT pk_ivm PRIMARY KEY (num_serie,fabricante)
+    CONSTRAINT pk_ivm PRIMARY KEY (num_serie, fabricante)
 );
 
 CREATE TABLE ponto_de_retalho (
@@ -60,9 +60,8 @@ CREATE TABLE instalada_em(
     num_serie numeric(16,0) NOT NULL UNIQUE,
     fabricante VARCHAR(80) NOT NULL UNIQUE,
     local VARCHAR(80) NOT NULL,
-    CONSTRAINT pk_instalada_em PRIMARY KEY (num_serie,fabricante),
-    CONSTRAINT fk_instalada_em_num_serie FOREIGN KEY(num_serie) REFERENCES ivm(num_serie),
-    CONSTRAINT fk_instalada_em_fabricante FOREIGN KEY(fabricante) REFERENCES ivm(fabricante),
+    CONSTRAINT pk_instalada_em PRIMARY KEY (num_serie, fabricante),
+    CONSTRAINT fk_instalada_em_ivm FOREIGN KEY(num_serie, fabricante) REFERENCES ivm(num_serie, fabricante),
     CONSTRAINT fk_instalada_em_local FOREIGN KEY(local) REFERENCES ponto_de_retalho(nome)
 );
 
@@ -73,8 +72,7 @@ CREATE TABLE prateleira (
     altura numeric(4, 1) not null,
     nome VARCHAR(80) NOT NULL,
     CONSTRAINT pk_prateleira PRIMARY KEY (nro, num_serie, fabricante),
-    CONSTRAINT fk_prateleira_num_serie FOREIGN KEY(num_serie) REFERENCES ivm(num_serie),
-    CONSTRAINT fk_prateleira_fabricante FOREIGN KEY(fabricante) REFERENCES ivm(fabricante),
+    CONSTRAINT fk_prateleira_ivm FOREIGN KEY(num_serie, fabricante) REFERENCES ivm(num_serie, fabricante),
     CONSTRAINT fk_prateleira_nome FOREIGN KEY(nome) REFERENCES categoria(nome)
 );
 
@@ -87,11 +85,9 @@ CREATE TABLE planograma (
     faces numeric (4,0) NOT NULL,
     unidades numeric (7,0) NOT NULL,
     loc VARCHAR(80) NOT NULL,
-    CONSTRAINT pk_planograma PRIMARY KEY (ean,nro,num_serie,fabricante),
+    CONSTRAINT pk_planograma PRIMARY KEY (ean, nro, num_serie, fabricante),
     CONSTRAINT fk_planograma_ean FOREIGN KEY(ean) REFERENCES produto(ean),
-    CONSTRAINT fk_planograma_num_serie FOREIGN KEY(num_serie) REFERENCES prateleira(num_serie),
-    CONSTRAINT fk_planograma_fabricante FOREIGN KEY(fabricante) REFERENCES prateleira(fabricante),
-    CONSTRAINT fk_planograma_nro FOREIGN KEY(nro) REFERENCES prateleira(nro)
+    CONSTRAINT fk_planograma_prateleira FOREIGN KEY(nro, num_serie, fabricante) REFERENCES prateleira(nro, num_serie, fabricante)
 );
 
 CREATE TABLE retalhista(
@@ -105,9 +101,8 @@ CREATE TABLE responsavel_por(
     num_serie numeric(16,0) NOT NULL UNIQUE,
     fabricante VARCHAR(80) NOT NULL UNIQUE,
     nome_cat VARCHAR(80) NOT NULL,
-    CONSTRAINT pk_responsavel_por PRIMARY KEY (num_serie,fabricante),
-    CONSTRAINT fk_responsvale_por_num_serie FOREIGN KEY(num_serie) REFERENCES ivm(num_serie),
-    CONSTRAINT fk_responsvale_por_fabricante FOREIGN KEY(fabricante) REFERENCES ivm(fabricante),
+    CONSTRAINT pk_responsavel_por PRIMARY KEY (num_serie, fabricante),
+    CONSTRAINT fk_responsvale_por_ivm FOREIGN KEY(num_serie, fabricante) REFERENCES ivm(num_serie, fabricante),
     CONSTRAINT fk_responsvale_por_tin FOREIGN KEY(tin) REFERENCES retalhista(tin),
     CONSTRAINT fk_responsvale_por__nome_categoria FOREIGN KEY(nome_cat) REFERENCES categoria(nome)
 );
@@ -121,10 +116,7 @@ CREATE TABLE evento_reposicao(
     tin numeric(16,0) NOT NULL,
     unidades numeric(16,0)NOT NULL,
     instante TIMESTAMP  NOT NULL UNIQUE,
-    CONSTRAINT pk_evento_reposicao PRIMARY KEY (ean,nro,num_serie,fabricante,instante),
-    CONSTRAINT fk_evento_reposicao_ean FOREIGN KEY(ean) REFERENCES planograma(ean),
-    CONSTRAINT fk_evento_reposicao_nro FOREIGN KEY(nro) REFERENCES planograma(nro),
-    CONSTRAINT fk_evento_reposicao_num_serie FOREIGN KEY(num_serie) REFERENCES planograma(num_serie),
-    CONSTRAINT fk_evento_reposicao_fabricante FOREIGN KEY(fabricante) REFERENCES planograma(fabricante),
+    CONSTRAINT pk_evento_reposicao PRIMARY KEY (ean, nro, num_serie, fabricante, instante),
+    CONSTRAINT fk_evento_reposicao_planograma FOREIGN KEY(ean, nro, num_serie, fabricante) REFERENCES planograma(ean, nro, num_serie, fabricante),
     CONSTRAINT fk_evento_reposicao_tin FOREIGN KEY(tin) REFERENCES retalhista(tin)
 );
