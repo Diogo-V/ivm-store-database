@@ -20,6 +20,10 @@ select ean from produto as P where not exists(
 -- 4)
 select ean from evento_reposicao group by ean having count(*)=1;
 
+--- 5.b)
+DELETE FROM evento_reposicao AS e, responsavel_por AS rp, retalhista AS r
+       WHERE r.tin = %s AND r.nome = %s AND e.tin = %s AND rp.tin = %s;
+
 --- 5.c)
 
 SELECT e.ean, e.num_serie, t.ean, t.nome FROM evento_reposicao AS e, tem_categoria AS t
