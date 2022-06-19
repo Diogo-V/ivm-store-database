@@ -6,11 +6,14 @@ INSERT INTO categoria VALUES ('doce');
 INSERT INTO categoria VALUES ('planta');
 INSERT INTO categoria VALUES ('animal');
 INSERT INTO categoria VALUES ('outro');
+INSERT INTO categoria VALUES ('Frutos');
 
 INSERT INTO categoria_simples VALUES ('fruta');
 INSERT INTO categoria_simples VALUES ('legume');
 INSERT INTO categoria_simples VALUES ('peixe');
 INSERT INTO categoria_simples VALUES ('doce');
+INSERT INTO categoria_simples VALUES ('Frutos');
+
 
 INSERT INTO super_categoria VALUES ('planta');
 INSERT INTO super_categoria VALUES ('animal');
@@ -20,6 +23,7 @@ INSERT INTO tem_outra VALUES ('planta', 'fruta');
 INSERT INTO tem_outra VALUES ('planta', 'legume');
 INSERT INTO tem_outra VALUES ('animal', 'peixe');
 INSERT INTO tem_outra VALUES ('outro', 'doce');
+INSERT INTO tem_outra VALUES ('outro', 'Frutos');
 
 INSERT INTO produto VALUES (7962, 'legume', 'batatas');
 INSERT INTO produto VALUES (7963, 'legume', 'cenouras');
@@ -31,8 +35,8 @@ INSERT INTO produto VALUES (7972, 'doce', 'bolachas');
 INSERT INTO produto VALUES (7973, 'peixe', 'atum');
 INSERT INTO produto VALUES (7974, 'peixe', 'cavala');
 INSERT INTO produto VALUES (7976, 'fruta', 'figos');
-INSERT INTO produto VALUES (7977, 'fruta', 'uvas');
-INSERT INTO produto VALUES (7978, 'fruta', 'morangos');
+INSERT INTO produto VALUES (7977, 'fruta', 'Amoras');
+INSERT INTO produto VALUES (7978, 'fruta', 'Ameixas');
 INSERT INTO produto VALUES (7979, 'fruta', 'tomate');
 
 INSERT INTO tem_categoria VALUES (7962, 'legume');
@@ -54,6 +58,8 @@ INSERT INTO ivm VALUES (1234567790, 'Joaquim Malhado');
 INSERT INTO ivm VALUES (1234567690, 'Diana Chaves');
 INSERT INTO ivm VALUES (1234567590, 'Cristiano Ronaldo');
 INSERT INTO ivm VALUES (1234567490, 'Jungkook');
+INSERT INTO ivm VALUES (1234567290, 'Quim Barreiros');
+INSERT INTO ivm VALUES (1234567390, 'Tony Carreira');
 
 INSERT INTO ponto_de_retalho VALUES ('Galp - Oeiras', 'Lisboa', 'Oeiras');
 INSERT INTO ponto_de_retalho VALUES ('Galp - Martim Moniz', 'Lisboa', 'Martim Moniz');
@@ -72,12 +78,16 @@ INSERT INTO retalhista VALUES (1234567890123455, 'Diogo');
 INSERT INTO retalhista VALUES (1234567890123454, 'Sofia');
 INSERT INTO retalhista VALUES (1234567890123453, 'Daniel');
 INSERT INTO retalhista VALUES (1234567890123452, 'Jimin');
+INSERT INTO retalhista VALUES (1234567890123458, 'Quim Barreiros');
+INSERT INTO retalhista VALUES (1234567890123459, 'Tony Carreira');
 
 INSERT INTO responsavel_por VALUES (1234567890123456, 1234567890, 'João Machado', 'legume');
 INSERT INTO responsavel_por VALUES (1234567890123455, 1234567790, 'Joaquim Malhado', 'fruta');
 INSERT INTO responsavel_por VALUES (1234567890123454, 1234567690, 'Diana Chaves', 'doce');
 INSERT INTO responsavel_por VALUES (1234567890123453, 1234567590, 'Cristiano Ronaldo', 'planta');
 INSERT INTO responsavel_por VALUES (1234567890123452, 1234567490, 'Jungkook', 'animal');
+INSERT INTO responsavel_por VALUES (1234567890123458, 1234567290, 'Quim Barreiros', 'Frutos');
+INSERT INTO responsavel_por VALUES (1234567890123459, 1234567390, 'Tony Carreira', 'Frutos');
 
 INSERT INTO prateleira VALUES (30278567341, 1234567890, 'João Machado', 12, 'fruta');
 INSERT INTO prateleira VALUES (30278567342, 1234567890, 'João Machado', 22, 'legume');
