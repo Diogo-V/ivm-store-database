@@ -19,3 +19,9 @@ select ean from produto as P where not exists(
 
 -- 4)
 select ean from evento_reposicao group by ean having count(*)=1;
+
+--- 5.c)
+
+SELECT e.ean, e.num_serie, t.ean, t.nome FROM evento_reposicao AS e, tem_categoria AS t
+WHERE t.ean = e.ean AND e.num_serie = %s
+GROUP BY e.num_serie, t.nome

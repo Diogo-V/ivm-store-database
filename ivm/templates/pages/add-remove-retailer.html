@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h3>
+        Adicionar Retalhista:
+    </h3>
+    <form action="." method="POST" id ="addRetailer"> {% csrf_token %}
+        {{ form.as_p }}
+        <input type='hidden' value='addRetailer' name='id'>
+        <input type="submit" value="save">
+    </form>
+
+    <h3>
+        Remover Retalhista:
+    </h3>
+    <form action="." method="POST" id ="removeRetailer> {% csrf_token %}
+        {{ form.as_p }}
+        <input type ='hidden' value='removeRetailer' name='id'>
+        <input type = "submit" value="save">
+    </form>
+
+    <h2>
+        Resultados obtidos:
+    </h2>
+    <p>
+        {% for r in result %}
+            <li>
+                {{ r }}
+            </li>
+        {% endfor %}
+    </p>
+{% endblock %}
