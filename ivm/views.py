@@ -48,6 +48,7 @@ def sold_products_by_date_range(request):
     result = list()
     if request.method == "POST":
         form = RawDateSpanQuery(request.POST)
+        print("here 2")
         if form.is_valid():
             print(form.cleaned_data)
             start = form.cleaned_data["start_date"]
@@ -55,7 +56,9 @@ def sold_products_by_date_range(request):
 
             result = _do_query(query_sold_products_by_date_range,
                                [start.year, end.year, start.month, end.month, start.day, end.day])
-
+            print(type(start.year))
+            print(end.month)
+            print(end.day)
             print(result)
 
     context = {
