@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h3>
+        Adicionar Categoria:
+    </h3>
+    <form action="." method="POST" id ="addCategory"> {% csrf_token %}
+        {{ form.as_p }}
+        <input type='hidden' value='addCategory' name='id'>
+        <input type="submit" value="save">
+    </form>
+
+    <h3>
+        Remover Categoria:
+    </h3>
+    <form action="." method="POST" id ="removeCategory"> {% csrf_token %}
+        {{ form.as_p }}
+        <input type='hidden' value='removeCategory' name='id'>
+        <input type="submit" value="save">
+    </form>
+
+    <h3>
+        Adicionar Super Categoria:
+    </h3>
+    <form action="." method="POST" id ="addSuperCategory"> {% csrf_token %}
+        {{ form.as_p }}
+        <input type='hidden' value='addSuperCategory' name='id'>
+        <input type="submit" value="save">
+    </form>
+
+    <h3>
+        Remover Super Categoria:
+    </h3>
+    <form action="." method="POST" id ="removeSuperCategory"> {% csrf_token %}
+        {{ form.as_p }}
+        <input type='hidden' value='removeSuperCategory' name='id'>
+        <input type="submit" value="save">
+    </form>
+
+    <h3>
+        Adicionar Categoria Simples:
+    </h3>
+    <form action="." method="POST" id ="addBasicCategory"> {% csrf_token %}
+        {{ form.as_p }}
+        <input type='hidden' value='addBasicCategory' name='id'>
+        <input type="submit" value="save">
+    </form>
+
+    <h3>
+        Remover Categoria Simples:
+    </h3>
+    <form action="." method="POST" id ="removeBasicCategory"> {% csrf_token %}
+        {{ form.as_p }}
+        <input type='hidden' value='removeBasicCategory' name='id'>
+        <input type="submit" value="save">
+    </form>
+
+    <h2>
+        Resultados obtidos:
+    </h2>
+    <p>
+        {% for r in result %}
+            <li>
+                {{ r }}
+            </li>
+        {% endfor %}
+    </p>
+{% endblock %}

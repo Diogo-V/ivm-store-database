@@ -4,6 +4,9 @@ from . import views
 
 urlpatterns = [
     path('', views.landing_page_view),
+    path('add-remove-category/', views.add_remove_category),
+    path('add-remove-retailer/', views.add_remove_retailer),
+    path('sold-products-ivm/', views.sold_products_ivm),
     path('retailer-more-replaces/', views.retailer_with_most_replaces_view),
     path('retailers-simple-categories/', views.retailers_with_simple_categories_view),
     path('products-never-replaced/', views.products_never_replaced_view),
