@@ -13,7 +13,7 @@
     <h3>
         Remover Retalhista:
     </h3>
-    <form action="." method="POST" id ="removeRetailer> {% csrf_token %}
+    <form action="." method="POST" id ="removeRetailer"> {% csrf_token %}
         {{ form.as_p }}
         <input type ='hidden' value='removeRetailer' name='id'>
         <input type = "submit" value="save">

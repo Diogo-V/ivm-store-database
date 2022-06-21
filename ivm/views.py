@@ -132,6 +132,7 @@ def add_remove_category(request):
 def add_remove_retailer(request):
     form = RawRetailerQuery()
     result = list()
+
     if request.method == "POST":
         form = RawRetailerQuery(request.POST)
         if form.is_valid():
@@ -146,7 +147,7 @@ def add_remove_retailer(request):
                 print(result)
 
             elif request.POST.get('id') == "removeRetailer":
-                _do_query_without_results(query_remove_retailer, [retailer_tin, retailer_name])
+                _do_query_without_results(query_remove_retailer, [retailer_tin, retailer_name, retailer_tin, retailer_tin])
                 result = _do_query(query_show_retailer)
                 print(result)
 
@@ -256,7 +257,7 @@ query_show_basic_category = "SELECT nome FROM categoria_simples;"
 
 query_add_retailer = "INSERT INTO retalhista VALUES (%s, %s);"
 
-query_remove_retailer = "DELETE FROM retalhista WHERE retalhista.tin = %s AND retalhista.nome = %s;"
+query_remove_retailer = "DELETE FROM evento_reposicao AS e, responsavel_por AS rp, retalhista AS r WHERE r.tin = %s AND r.nome = %s AND e.tin = %s AND rp.tin = %s;"
 
 query_show_retailer = "SELECT tin, nome FROM retalhista;"
 
