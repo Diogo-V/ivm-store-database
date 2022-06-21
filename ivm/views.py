@@ -177,6 +177,25 @@ def sold_products_ivm(request):
     return render(request, 'pages/sold-products-ivm.html', context)
 
 
+def list_sub_categories(request):
+    form = RawCategoryQuery()
+    result = list()
+    if request.method == "POST":
+        form = RawCategoryQuery(request.POST)
+        if form.is_valid():
+            print(form.cleaned_data)
+
+            category = form.cleaned_data["category"]
+
+            _do_query(query_sub_categories_category,[category])
+
+    context = {
+        "form": form,
+        "result": result,
+    }
+    return render(request, 'pages/sub-categories-of-a-category.html', context)
+
+
 # ------------------------------------------------------ HELPERS ----------------------------------------------------- #
 
 
@@ -242,3 +261,5 @@ query_remove_retailer = "DELETE FROM retalhista WHERE retalhista.tin = %s AND re
 query_show_retailer = "SELECT tin, nome FROM retalhista;"
 
 query_sold_products_by_ivm = "SELECT t.nome, SUM(e.unidades) FROM evento_reposicao AS e, tem_categoria AS t WHERE t.ean = e.ean AND e.num_serie = %s GROUP BY t.nome"
+
+query_sub_categories_category = "WITH RECURSIVE generation AS (SELECT categoria FROM tem_outra WHERE super_categoria like %s UNION ALL SELECT tem_outra.categoria FROM tem_outra JOIN generation g ON g.categoria = tem_outra.super_categoria) SELECT categoria FROM generation;"

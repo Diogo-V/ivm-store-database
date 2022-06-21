@@ -25,3 +25,22 @@ select ean from evento_reposicao group by ean having count(*)=1;
 SELECT e.ean, e.num_serie, t.ean, t.nome FROM evento_reposicao AS e, tem_categoria AS t
 WHERE t.ean = e.ean AND e.num_serie = %s
 GROUP BY e.num_serie, t.nome
+
+-- 5.d)
+
+WITH RECURSIVE generation AS (
+    SELECT categoria
+    FROM tem_outra
+    WHERE super_categoria like %s
+ 
+UNION ALL
+ 
+    SELECT tem_outra.categoria
+    FROM tem_outra
+    JOIN generation g
+      ON g.categoria = tem_outra.super_categoria
+)
+SELECT categoria
+FROM generation;
+
+

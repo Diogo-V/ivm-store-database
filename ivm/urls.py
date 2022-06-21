@@ -13,4 +13,5 @@ urlpatterns = [
     path('products-replaced-same-retailer/', views.products_replaced_by_same_retailer_view),
     path('sold-products-date-range/', views.sold_products_by_date_range),
     path('sold-products-district/', views.sold_products_by_district),
+    path('sub-categories-category',views.list_sub_categories),
 ]
