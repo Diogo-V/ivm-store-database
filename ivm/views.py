@@ -146,7 +146,7 @@ def add_remove_retailer(request):
 
     context = {
         "form": form,
-        "result": result,
+        "result": list(map(lambda x: (x[0] if x[0] is None else float(x[0]), x[1]), result)),
     }
     return render(request, 'pages/add-remove-retailer.html', context)
 
@@ -221,6 +221,8 @@ def _do_query_without_results(query, params=None):
 
 # ---------------------------------------------------- SQL QUERIES --------------------------------------------------- #
 
+# ---------------------------------------------------- SQL QUERIES --------------------------------------------------- #
+
 
 query_retailer_most_replaces = "select nome from evento_reposicao natural join retalhista group by tin,nome having count(*) >= all (select count(*) from evento_reposicao group by tin);"
 
@@ -234,27 +236,27 @@ query_sold_products_by_date_range = "SELECT SUM(v.unidades), v.dia_semana, v.con
 
 query_sold_products_by_district = "SELECT SUM(v.unidades), v.dia_semana, v.concelho, v.cat FROM Vendas AS v WHERE v.distrito LIKE %s GROUP BY CUBE(v.concelho, v.cat, v.dia_semana);"
 
-query_add_category = "INSERT INTO categoria VALUES (%s);"
+query_add_category = "INSERT INTO categoria VALUES (%s); commit;"
 
 query_show_category = "SELECT nome FROM categoria;"
 
-query_remove_category = "DELETE FROM categoria WHERE categoria.nome = %s;"
+query_remove_category = "DELETE FROM categoria WHERE categoria.nome = %s; commit;"
 
-query_add_super_category = "INSERT INTO super_categoria VALUES (%s);"
+query_add_super_category = "INSERT INTO super_categoria VALUES (%s); commit;"
 
-query_add_basic_category = "INSERT INTO categoria_super VALUES (%s);"
+query_add_basic_category = "INSERT INTO categoria_simples VALUES (%s); commit;"
 
-query_remove_super_category = "DELETE FROM super_categoria WHERE super_categoria.nome = %s;"
+query_remove_super_category = "DELETE FROM super_categoria WHERE super_categoria.nome = %s; commit;"
 
-query_remove_basic_category = "DELETE FROM categoria_simples WHERE categoria_simples.nome = %s;"
+query_remove_basic_category = "DELETE FROM categoria_simples WHERE categoria_simples.nome = %s; commit;"
 
 query_show_super_category = "SELECT nome FROM super_categoria;"
 
 query_show_basic_category = "SELECT nome FROM categoria_simples;"
 
-query_add_retailer = "INSERT INTO retalhista VALUES (%s, %s);"
+query_add_retailer = "INSERT INTO retalhista VALUES (%s, %s); commit;"
 
-query_remove_retailer = " DELETE FROM evento_reposicao AS e WHERE e.tin = %s; DELETE FROM responsavel_por AS rp WHERE rp.tin = %s; DELETE FROM retalhista AS r WHERE r.tin = %s AND r.nome = %s;"
+query_remove_retailer = " DELETE FROM evento_reposicao AS e WHERE e.tin = %s; DELETE FROM responsavel_por AS rp WHERE rp.tin = %s; DELETE FROM retalhista AS r WHERE r.tin = %s AND r.nome = %s; commit;"
 
 query_show_retailer = "SELECT tin, nome FROM retalhista;"
 

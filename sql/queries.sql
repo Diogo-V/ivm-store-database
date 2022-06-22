@@ -20,7 +20,25 @@ select ean from produto as P where not exists(
 -- 4)
 select ean from evento_reposicao group by ean having count(*)=1;
 
+--- 5.a)
+-- add category
+INSERT INTO categoria VALUES (%s); commit;
+-- remove category
+DELETE FROM categoria WHERE categoria.nome = %s; commit;
+-- add super category
+INSERT INTO categoria_super VALUES (%s); commit;
+-- remove super category
+DELETE FROM super_categoria WHERE super_categoria.nome = %s; commit;
+-- add simple category
+INSERT INTO categoria_simples VALUES (%s); commit;
+-- remove simple category
+DELETE FROM categoria_simples WHERE categoria_simples.nome = %s; commit;
+
+
 --- 5.b)
+
+INSERT INTO retalhista VALUES (%s, %s); commit;
+--
 
 DELETE FROM evento_reposicao AS e
 WHERE e.tin = %s;
@@ -30,6 +48,8 @@ WHERE rp.tin = %s;
 
 DELETE FROM retalhista AS r
 WHERE r.tin = %s AND r.nome = %s;
+
+commit;
 
 
 --- 5.c)
