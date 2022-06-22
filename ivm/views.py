@@ -165,7 +165,7 @@ def sold_products_ivm(request):
 
     context = {
         "form": form,
-        "result": result
+        "result": list(map(lambda x: (x[0], (x[1] if x[1] is None else float(x[1])),), result)),
     }
     return render(request, 'pages/sold-products-ivm.html', context)
 
