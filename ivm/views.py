@@ -55,11 +55,10 @@ def sold_products_by_date_range(request):
 
             result = _do_query(query_sold_products_by_date_range,
                                [start.year, end.year, start.month, end.month, start.day, end.day])
-
-
+            
     context = {
         "form": form,
-        "result": result
+        "result": list(map(lambda x: (x[0] if x[0] is None else float(x[0]), x[1] if x[1] is None else float(x[1]), x[2]), result))
     }
 
     return render(request, 'pages/sold-products-date-range.html', context)
@@ -71,16 +70,15 @@ def sold_products_by_district(request):
     if request.method == "POST":
         form = RawDistrictQuery(request.POST)
         if form.is_valid():
-            print(form.cleaned_data)
 
             district = form.cleaned_data["district"]
 
             result = _do_query(query_sold_products_by_district,
                                [district])
-
+            
     context = {
         "form": form,
-        "result": result
+        "result": list(map(lambda x: (x[0] if x[0] is None else float(x[0]), x[1] if x[1] is None else float(x[1]), x[2], x[3]), result))
     }
     return render(request, 'pages/sold-products-district.html', context)
 
@@ -91,7 +89,6 @@ def add_remove_category(request):
     if request.method == "POST":
         form = RawCategoryQuery(request.POST)
         if form.is_valid():
-            print(form.cleaned_data)
 
             category = form.cleaned_data["category"]
 
@@ -133,7 +130,6 @@ def add_remove_retailer(request):
     if request.method == "POST":
         form = RawRetailerQuery(request.POST)
         if form.is_valid():
-            print(form.cleaned_data)
 
             retailer_tin = form.cleaned_data["retailer_tin"]
             retailer_name = form.cleaned_data["retailer_name"]
@@ -161,7 +157,6 @@ def sold_products_ivm(request):
     if request.method == "POST":
         form = RawIVMQuery(request.POST)
         if form.is_valid():
-            print(form.cleaned_data)
 
             ivm = form.cleaned_data["ivm"]
 
@@ -181,7 +176,6 @@ def sub_categories_of_super_category(request):
     if request.method == "POST":
         form = RawCategoryQuery(request.POST)
         if form.is_valid():
-            print(form.cleaned_data)
 
             category = form.cleaned_data["category"]
 
@@ -190,7 +184,7 @@ def sub_categories_of_super_category(request):
 
     context = {
         "form": form,
-        "result": result
+        "result": list(map(lambda x: x[0], result))
     }
     return render(request, 'pages/sub-categories-of-super-category.html', context)
 
@@ -205,7 +199,13 @@ def _do_query(query, params=None):
         else:
             cursor.execute(query, params)
         result = cursor.fetchall()
-
+        
+    if len(result) == 1:
+        for i in result[0]:
+            if i is not None:
+                return result
+        return []
+        
     return result
 
 
