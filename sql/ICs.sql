@@ -8,7 +8,21 @@ CREATE OR REPLACE FUNCTION chk_super_categoria_proc()
 RETURNS TRIGGER AS
 $$
 BEGIN
-    IF NEW.super_categoria = New.categoria THEN
+    IF EXISTS (WITH RECURSIVE generation AS (
+    SELECT categoria
+    FROM tem_outra
+    WHERE super_categoria like NEW.categoria
+
+UNION ALL
+
+    SELECT tem_outra.categoria
+    FROM tem_outra
+    JOIN generation g
+      ON g.categoria = tem_outra.super_categoria
+)
+SELECT categoria
+FROM generation
+WHERE categoria like NEW.super_categoria) OR NEW.super_categoria LIKE NEW.categoria THEN
         RAISE EXCEPTION 'Categoria dentro dela mesma';
     END IF; 
 

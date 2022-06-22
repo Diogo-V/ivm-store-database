@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h3>
+        Adicionar Categoria:
+    </h3>
+    <form action="." method="POST" id ="listSubCategories"> {% csrf_token %}
+        {{ form.as_p }}
+        <input type='hidden' value='addCategory' name='id'>
+        <input type="submit" value="save">
+    </form>
+
+    <h2>
+        Resultados obtidos:
+    </h2>
+    <p>
+        {% for r in result %}
+            <li>
+                {{ r }}
+            </li>
+        {% endfor %}
+    </p>
+{% endblock %}

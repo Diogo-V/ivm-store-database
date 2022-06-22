@@ -56,12 +56,6 @@ def sold_products_by_date_range(request):
             result = _do_query(query_sold_products_by_date_range,
                                [start.year, end.year, start.month, end.month, start.day, end.day])
 
-            print(start.year)
-            print(start.month)
-            print(start.day)
-            print(end.month)
-            print(end.day)
-            print(result)
 
     context = {
         "form": form,
