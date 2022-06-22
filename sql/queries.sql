@@ -21,11 +21,32 @@ select ean from produto as P where not exists(
 select ean from evento_reposicao group by ean having count(*)=1;
 
 --- 5.b)
-DELETE FROM evento_reposicao AS e, responsavel_por AS rp, retalhista AS r
-       WHERE r.tin = %s AND r.nome = %s AND e.tin = %s AND rp.tin = %s;
+
+DELETE FROM evento_reposicao AS e
+WHERE e.tin = %s;
+
+DELETE FROM responsavel_por AS rp
+WHERE rp.tin = %s;
+
+DELETE FROM retalhista AS r
+WHERE r.tin = %s AND r.nome = %s;
+
 
 --- 5.c)
 
 SELECT e.ean, e.num_serie, t.ean, t.nome FROM evento_reposicao AS e, tem_categoria AS t
 WHERE t.ean = e.ean AND e.num_serie = %s
-GROUP BY e.num_serie, t.nome
+GROUP BY e.num_serie, t.nome;
+
+--- 5.d)
+
+WITH RECURSIVE categoria_simples AS (
+    SELECT nome FROM super_categoria AS s
+    WHERE nome= %s
+    UNION ALL
+    SELECT t.categoria FROM tem_outra AS t
+    INNER JOIN categoria_simples AS s
+    ON s.nome = t.super_categoria)
+    SELECT * from categoria_simples
+    WHERE nome != %s
+;

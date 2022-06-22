@@ -55,7 +55,10 @@ def sold_products_by_date_range(request):
 
             result = _do_query(query_sold_products_by_date_range,
                                [start.year, end.year, start.month, end.month, start.day, end.day])
-            print(type(start.year))
+
+            print(start.year)
+            print(start.month)
+            print(start.day)
             print(end.month)
             print(end.day)
             print(result)
@@ -147,7 +150,7 @@ def add_remove_retailer(request):
                 print(result)
 
             elif request.POST.get('id') == "removeRetailer":
-                _do_query_without_results(query_remove_retailer, [retailer_tin, retailer_name, retailer_tin, retailer_tin])
+                _do_query_without_results(query_remove_retailer, [retailer_tin, retailer_tin, retailer_tin, retailer_name])
                 result = _do_query(query_show_retailer)
                 print(result)
 
@@ -177,6 +180,25 @@ def sold_products_ivm(request):
     }
     return render(request, 'pages/sold-products-ivm.html', context)
 
+
+def sub_categories_of_super_category(request):
+    form = RawCategoryQuery()
+    result = list()
+    if request.method == "POST":
+        form = RawCategoryQuery(request.POST)
+        if form.is_valid():
+            print(form.cleaned_data)
+
+            category = form.cleaned_data["category"]
+
+            result = _do_query(query_sub_categories_of_super_category,
+                               [category, category])
+
+    context = {
+        "form": form,
+        "result": result
+    }
+    return render(request, 'pages/sub-categories-of-super-category.html', context)
 
 # ------------------------------------------------------ HELPERS ----------------------------------------------------- #
 
@@ -216,7 +238,7 @@ query_products_replaced_same_retailer = "select ean from evento_reposicao group 
 
 query_sold_products_by_date_range = "SELECT SUM(v.unidades), v.dia_semana, v.concelho FROM Vendas AS v WHERE (v.ano BETWEEN %s AND %s) AND (v.dia_mes BETWEEN %s AND %s) AND (v.dia_semana BETWEEN %s AND %s) GROUP BY CUBE(v.dia_semana, v.concelho);"
 
-query_sold_products_by_district = "SELECT SUM(v.unidades), v.dia_semana, v.concelho, v.cat FROM Vendas AS v WHERE v.distrito LIKE %s GROUP BY GROUPING SETS(v.concelho, v.cat, v.dia_semana);"
+query_sold_products_by_district = "SELECT SUM(v.unidades), v.dia_semana, v.concelho, v.cat FROM Vendas AS v WHERE v.distrito LIKE %s GROUP BY CUBE(v.concelho, v.cat, v.dia_semana);"
 
 query_add_category = "INSERT INTO categoria VALUES (%s);"
 
@@ -238,8 +260,10 @@ query_show_basic_category = "SELECT nome FROM categoria_simples;"
 
 query_add_retailer = "INSERT INTO retalhista VALUES (%s, %s);"
 
-query_remove_retailer = "DELETE FROM evento_reposicao AS e, responsavel_por AS rp, retalhista AS r WHERE r.tin = %s AND r.nome = %s AND e.tin = %s AND rp.tin = %s;"
+query_remove_retailer = " DELETE FROM evento_reposicao AS e WHERE e.tin = %s; DELETE FROM responsavel_por AS rp WHERE rp.tin = %s; DELETE FROM retalhista AS r WHERE r.tin = %s AND r.nome = %s;"
 
 query_show_retailer = "SELECT tin, nome FROM retalhista;"
 
 query_sold_products_by_ivm = "SELECT t.nome, SUM(e.unidades) FROM evento_reposicao AS e, tem_categoria AS t WHERE t.ean = e.ean AND e.num_serie = %s GROUP BY t.nome"
+
+query_sub_categories_of_super_category = "WITH RECURSIVE categoria_simples AS ( SELECT nome FROM super_categoria AS s WHERE nome= %s UNION ALL SELECT t.categoria FROM tem_outra AS t INNER JOIN categoria_simples AS s ON s.nome = t.super_categoria) SELECT * from categoria_simples WHERE nome != %s;"
